@@ -1,0 +1,9 @@
+version: '2.1'
+
+orbs:
+  rusty: bencord0/rusty-orb@dev:8a3b4e67ec6ea178225a3a7bcb15edbc34e8de65
+
+workflows:
+  greetings:
+    jobs:
+      - rusty/hello
