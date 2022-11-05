@@ -1,9 +1,40 @@
 version: '2.1'
+setup: true
 
 orbs:
-  rusty: bencord0/rusty-orb@1.0.0
+  rusty: bencord0/rusty-orb@1.1.0
+
+default-executor: &default-executor
+  # https://circleci.com/docs/configuration-reference/#executor-job
+  docker:
+    - image: ghcr.io/bencord0/gentoo-base:production
+
+  # machine:
+  #   ...
+  # macos:
+  #   ...
+
+jobs:
+  setup:
+    <<: *default-executor
+    steps:
+      - checkout
+      - run:
+          name: Generate config
+          command: |
+            mkdir -pv generated-config
+            cp -v .circleci/hello.yml generated-config/config.yml
+            echo "to: ${CIRCLE_USERNAME}" > generated-config/parameters.yml
+      - persist_to_workspace:
+          root: .
+          paths: [generated-config]
 
 workflows:
-  greetings:
+  setup:
     jobs:
-      - rusty/hello
+      - setup
+      - rusty/continue:
+          # relative to workspace root
+          configuration: ./generated-config/config.yml
+          parameters: ./generated-config/parameters.yml
+          requires: [setup]
