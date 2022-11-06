@@ -7,7 +7,7 @@ orbs:
 default-executor: &default-executor
   # https://circleci.com/docs/configuration-reference/#executor-job
   docker:
-    - image: ghcr.io/bencord0/gentoo-base:production
+    - image: cimg/rust:1.64
 
   # machine:
   #   ...
@@ -23,7 +23,7 @@ jobs:
           name: Generate config
           command: |
             mkdir -pv generated-config
-            cp -v .circleci/hello.yml generated-config/config.yml
+            cargo run --bin generate_pipeline | tee generated-config/config.yml
             echo "to: ${CIRCLE_USERNAME}" > generated-config/parameters.yml
       - persist_to_workspace:
           root: .
