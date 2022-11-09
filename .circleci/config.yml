@@ -4,6 +4,14 @@ setup: true
 orbs:
   rusty: bencord0/rusty-orb@1.1.0
 
+parameters:
+  use_conditionals:
+    type: bool
+    default: true
+  use_loops:
+    type: bool
+    default: true
+
 default-executor: &default-executor
   # https://circleci.com/docs/configuration-reference/#executor-job
   docker:
@@ -25,6 +33,10 @@ jobs:
             mkdir -pv generated-config
             cargo run --bin generate_pipeline | tee generated-config/config.yml
             echo "to: ${CIRCLE_USERNAME}" > generated-config/parameters.yml
+          environment:
+            PARAM_CONDITIONALS: << pipeline.parameters.use_conditionals >>
+            PARAM_LOOPS: << pipeline.parameters.use_loops >>
+
       - persist_to_workspace:
           root: .
           paths: [generated-config]
