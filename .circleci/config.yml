@@ -6,10 +6,10 @@ orbs:
 
 parameters:
   use_conditionals:
-    type: bool
+    type: boolean
     default: true
   use_loops:
-    type: bool
+    type: boolean
     default: true
 
 default-executor: &default-executor
