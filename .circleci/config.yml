@@ -6,11 +6,11 @@ orbs:
 
 parameters:
   use_conditionals:
-    type: boolean
-    default: true
+    type: string
+    default: "true"
   use_loops:
-    type: boolean
-    default: true
+    type: string
+    default: "true"
 
 default-executor: &default-executor
   # https://circleci.com/docs/configuration-reference/#executor-job
