@@ -4,14 +4,6 @@ setup: true
 orbs:
   rusty: bencord0/rusty-orb@1.1.0
 
-parameters:
-  use_conditionals:
-    type: string
-    default: "true"
-  use_loops:
-    type: string
-    default: "true"
-
 default-executor: &default-executor
   # https://circleci.com/docs/configuration-reference/#executor-job
   docker:
@@ -25,9 +17,6 @@ default-executor: &default-executor
 jobs:
   setup:
     <<: *default-executor
-    environment:
-      PARAM_CONDITIONALS: << pipeline.parameters.use_conditionals >>
-      PARAM_LOOPS: << pipeline.parameters.use_loops >>
     steps:
       - checkout
       - run:
