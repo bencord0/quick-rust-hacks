@@ -6,11 +6,11 @@ orbs:
 
 parameters:
   use_conditionals:
-    type: boolean
-    default: true
+    type: string
+    default: "true"
   use_loops:
-    type: boolean
-    default: true
+    type: string
+    default: "true"
 
 default-executor: &default-executor
   # https://circleci.com/docs/configuration-reference/#executor-job
@@ -25,6 +25,9 @@ default-executor: &default-executor
 jobs:
   setup:
     <<: *default-executor
+    environment:
+      PARAM_CONDITIONALS: << pipeline.parameters.use_conditionals >>
+      PARAM_LOOPS: << pipeline.parameters.use_loops >>
     steps:
       - checkout
       - run:
@@ -33,9 +36,6 @@ jobs:
             mkdir -pv generated-config
             cargo run --bin generate_pipeline | tee generated-config/config.yml
             echo "to: ${CIRCLE_USERNAME}" > generated-config/parameters.yml
-          environment:
-            PARAM_CONDITIONALS: << pipeline.parameters.use_conditionals >>
-            PARAM_LOOPS: << pipeline.parameters.use_loops >>
 
       - persist_to_workspace:
           root: .
